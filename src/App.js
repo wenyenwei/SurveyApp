@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Results from './Results';
 import VoteForm from './VoteForm';
+import FullResult from './FullResult';
 import {Grid, Row} from 'react-bootstrap';
 
 class App extends Component {
@@ -13,12 +14,8 @@ class App extends Component {
           <h1 className="App-title">WELCOME TO VOTEAPP</h1>
         </header>
         <br/>
-        <Grid>
-          <Row className="show-grid">
-            <Results />
-            <VoteForm />
-          </Row>
-        </Grid>
+        <FullResult />
+
 
       </div>
     );
