@@ -33,7 +33,6 @@ class VoteForm extends Component{
     handleSubmit(e){
         this.props.addSurvey(this.state);
         console.log(this.state);
-        setInterval(function(){console.log('test')}, 100000);
     }
     render(){
         return(

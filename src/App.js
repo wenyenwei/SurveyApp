@@ -10,8 +10,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src="https://cdn2.iconfinder.com/data/icons/vote-reward-badges1/24/Vote-Stamp-512.png" className="App-logo" alt="logo" />
-          <h1 className="App-title">WELCOME TO VOTEAPP</h1>
+          <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className="App-logo" alt="logo" />
+          <h1 className="App-title">WELCOME TO SURVEYAPP</h1>
         </header>
         <br/>
         <FullResult />
