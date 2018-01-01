@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Col, Button, Table, Grid, Row} from 'react-bootstrap';
+import {Col, Button, Table, Grid, Row, Panel} from 'react-bootstrap';
 import VoteForm from './VoteForm';
 import Results from './Results';
+import NavbarInstance from './Nav';
 import * as apiCalls from './api';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'; // ES6
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
 class FullResult extends Component{
     constructor(props){
         super(props);
         this.state = {
           survey: [],
-          visible: false
+          visible: false,
+          courses: [],
+          maxNume: 1
         }
         this.addSurvey = this.addSurvey.bind(this);
         this.showResults = this.showResults.bind(this);
+        this.loadSurveys = this.loadSurveys.bind(this);
+        this.countVotes = this.countVotes.bind(this);
     }
     componentWillMount(){
         this.loadSurveys();
     }
     async loadSurveys(){
       let surveys = await apiCalls.getSurveys();
-      this.setState({survey: surveys});        
+      this.setState({survey: surveys}); 
+      this.countVotes();
     } 
     async addSurvey(val){
         let newSurvey = await apiCalls.createSurvey(val);
@@ -45,23 +54,67 @@ class FullResult extends Component{
     showResults(){
       this.setState({visible:!this.state.visible});
     }
+    countVotes(){
+      let counts = {};
+      console.log(this.state.survey);
+      this.state.survey.map((data) => {
+        for (let course of data.courses){
+          counts[course] = counts[course]+1 || 1;
+        }
+      });
+      var count = 0;
+      var maxNum = '';
+      for (let i in counts){
+        if (parseInt(counts[i]) > count){
+              count = counts[i];
+              maxNum = i;
+            }
+        }
+      this.setState({courses: counts, maxNum: count});
+    }
   
     render(){
         const surveyData = this.state.survey.map((data, i) => (
-          <tr>
+          <tr key={data._id}>
             <td>{i+1}</td>
             <td>{data.name}</td>
             <td>{data.email}</td>
             <td>{data.gender}</td>
             <td>{data.age}</td>
-            <td>{data.courses}</td>
+            <td>{data.courses.join('/ ')}</td>
             <td>{data.text}</td>
           </tr>          
         ));
+       let countResults = [];
+       let courseId = 0;
+       for (let course in this.state.courses){
+         console.log(course,this.state.courses[course]);
+         courseId++;
+          countResults.push(
+            <Results 
+              key = {courseId}
+              maxNum = {this.state.maxNum}
+              courseName = {course}
+              courseCount = {this.state.courses[course]}
+            />          
+          );
+        }
+
         return(
+          <div className="App">
+          <NavbarInstance />
+          <header className="App-header">
+            <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className="App-logo" alt="logo" />
+            <h1 className="App-title">WELCOME TO SURVEYAPP</h1>
+          </header>
+          <br/>
           <Grid>
             <Row className="show-grid">
-              <Results /> 
+              <Col md={6}>
+               <Panel>
+                {countResults} 
+               </Panel>
+              </Col>
               <VoteForm addSurvey = {this.addSurvey} />
             </Row>
             <Row className="show-grid">
@@ -76,13 +129,7 @@ class FullResult extends Component{
               <br/>
               <br/>
               <br/>
-              <ReactCSSTransitionGroup
-                transitionName="example"
-                transitionAppear={true}
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={300}
-              >
-                <Col animation={true} md={12} style={{display: this.state.visible? 'block':'none'}}>
+                <Col md={12} style={{display: this.state.visible? 'block':'none'}}>
                   <Table striped bordered condensed hover>
                     <thead>
                       <tr>
@@ -100,9 +147,9 @@ class FullResult extends Component{
                     </tbody>
                   </Table>
                </Col>       
-              </ReactCSSTransitionGroup>
             </Row>
           </Grid>
+        </div>
   
         );
     }

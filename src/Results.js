@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import {Col, Panel, Table} from 'react-bootstrap';
+import {Col, Panel, Table, Row} from 'react-bootstrap';
 
-class Results extends Component{
-    render(){
-        return(
-           <Col md={6}>
-              <Panel>
-                <Col md={2}>
-                  <h4></h4>
-                </Col>
-                <Col md={10}>
-                  <div></div>
-                </Col>
-              </Panel>
-           </Col> 
-        );
-    }
-}
+const Results = ({courseName, courseCount, maxNum}) => (
+              <Row>
+              <Col md={4}>
+                <h5 className="courseName">{courseName}</h5>
+              </Col>
+              <Col md={8}>
+                <div>
+                  <div 
+                    className="countBar" 
+                    style={{width:courseCount/maxNum*300}}
+                  >
+                    {courseCount}
+                  </div>
+                </div>
+              </Col>
+              </Row>
+
+);
+
 
 export default Results;
