@@ -1,13 +1,29 @@
+.Link{
+  text-decoration: none;
+  color: #9d9d9d;
+}
+.Link:focus{
+  text-decoration: none !important;
+  color: white !important;   
+}
+.Link:hover{
+  text-decoration: none;
+  color: white;  
+}
 .navbar{
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 .courseName{
   font-weight: bold;
 }
-
+.coursePanel:hover{
+  background-color: #ddd;
+}
 .countBar{
   background-color: orange;
   color: white;
+  height: 30px;
+  padding: 0.5%;
 }
 
 .example-enter {

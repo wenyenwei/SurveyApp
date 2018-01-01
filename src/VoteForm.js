@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Col, Panel, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
+import {Row, Col, Panel, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
 
 
 class VoteForm extends Component{
@@ -36,6 +36,8 @@ class VoteForm extends Component{
     }
     render(){
         return(
+          <Row className="show-grid">
+           <Col md={3}/>
            <Col md={6}>
             <Panel>
              <form className="Form" onSubmit={this.handleSubmit}>
@@ -144,6 +146,8 @@ class VoteForm extends Component{
             </form>
             </Panel>
            </Col>
+           <Col md={3}/>
+          </Row>
         );
     }
 }

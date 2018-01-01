@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Col, Panel, Table, Row} from 'react-bootstrap';
+import {Row, Col, Panel, Table} from 'react-bootstrap';
 
 const Results = ({courseName, courseCount, maxNum}) => (
-              <Row>
+          <Panel className="coursePanel">
+            <Row>
               <Col md={4}>
                 <h5 className="courseName">{courseName}</h5>
               </Col>
@@ -16,8 +17,8 @@ const Results = ({courseName, courseCount, maxNum}) => (
                   </div>
                 </div>
               </Col>
-              </Row>
-
+            </Row>
+          </Panel>
 );
 
 

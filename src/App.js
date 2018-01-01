@@ -5,7 +5,9 @@ import FullResult from './FullResult';
 class App extends Component {
   render() {
     return (
-        <FullResult />
+        <div className="App">
+          <FullResult />
+        </div>
     );
   }
 }
