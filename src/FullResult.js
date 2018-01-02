@@ -137,15 +137,15 @@ class FullResult extends Component{
             <Row className="show-grid">
               <Col md={12}>
               <Panel>
-                <Col md={4}></Col>
-                <Col md={4}>
+                <Col md={5}></Col>
+                <Col md={2}>
                 <Image 
                   style={{display: this.state.loading? 'block':'none'}} 
                   src="https://loading.io/spinners/wave/lg.wave-ball-preloader.gif" 
                   responsive
                 />
                 </Col>
-                <Col md={4}></Col>
+                <Col md={5}></Col>
                 <Col md={12}>{countResults}</Col>
               </Panel>
               </Col>
