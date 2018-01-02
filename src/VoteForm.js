@@ -12,14 +12,17 @@ class VoteForm extends Component{
           gender: '',
           age: '',
           courses: [],
-          note: ''
+          note: '',
+          complete: false
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.checkComplete = this.checkComplete.bind(this);
     }
 
     
     handleChange(event){
+      this.setState({validationState: null});
       const target = event.target;
       let value = target.type === 'checkbox' ? target.checked : target.value;
       const name = target.name;
@@ -30,24 +33,57 @@ class VoteForm extends Component{
   
       this.setState({[name]: value});
     }
-    handleSubmit(e){
-        this.props.addSurvey(this.state);
-        console.log(this.state);
+    validationState(){
+     if(this.state.name.length>0 && 
+        this.state.email.length>0 && 
+        this.state.gender.length>0 && 
+        this.state.age.length>0 && 
+        this.state.courses.length>0){
+        return false;
+      }
+      return true;
     }
+    checkComplete(event){        
+
+      const emptyRemind = [];
+        for (let item in this.state){
+          if (this.state[item].length == 0 && item!== 'note'){
+            emptyRemind.push(item)
+          }
+        }
+      if (emptyRemind.length > 0){
+        {/*alert(emptyRemind.join(', ')+' cannot be empty. Please complete before preceed.');
+        event.preventDefault();*/}
+        this.setState({complete: false});
+      }else {
+        this.setState({complete: true});
+      }
+    }
+    
+    handleSubmit(){
+        alert('Successfully submitted');
+        this.props.addSurvey(this.state);
+    }
+
     render(){
         return(
           <Row className="show-grid">
            <Col md={3}/>
            <Col md={6}>
             <Panel>
-             <form className="Form" onSubmit={this.handleSubmit}>
+            {/*<form className="Form" onSubmit={this.handleSubmit}>*/}
+            <form className="Form" onSubmit={(e) => {
+              //eslint-disable-next-line
+              if(confirm('Are you sure to submit?')){this.handleSubmit()};}}
+            >
               <h4>Course Prior Survey</h4>
               <FormGroup>
                  <Col componentClass={ControlLabel} sm={1}>
+                  <span className="mustFill">*</span>
                   Name
                 </Col>
                 <Col sm={5}>
-                  <FormControl 
+                  <FormControl
                     type="text" 
                     placeholder="Jane Doe"
                     name="name"
@@ -56,6 +92,7 @@ class VoteForm extends Component{
                   />
                 </Col>
                 <Col componentClass={ControlLabel} sm={1}>
+                  <span className="mustFill">*</span>
                   Email
                 </Col>
                 <Col sm={5}>
@@ -71,6 +108,7 @@ class VoteForm extends Component{
               <br/>
               <FormGroup>
                 <Col componentClass={ControlLabel} sm={1}>
+                  <span className="mustFill">*</span>
                   Gender
                 </Col>
                 <Radio 
@@ -103,10 +141,12 @@ class VoteForm extends Component{
               </FormGroup>
               <FormGroup controlId="formControlsSelect">
                 <Col componentClass={ControlLabel} sm={1}>
+                  <span className="mustFill">*</span>
                   Age
                 </Col>
                 <Col sm={11}>
                   <FormControl name="age" value={this.state.age} onChange={this.handleChange} componentClass="select" placeholder="select">
+                    <option value="">Select</option>
                     <option value="under 20">Under 20</option>
                     <option value="20-30">20-30</option>
                     <option value="30-40">30-40</option>
@@ -115,7 +155,10 @@ class VoteForm extends Component{
                 </Col>
               </FormGroup>
               <FormGroup controlId="formControlsSelectMultiple">
-                <ControlLabel>Courses you're interested in</ControlLabel>
+                <ControlLabel>
+                  <span className="mustFill">*</span>
+                  Courses you're interested in
+                </ControlLabel>
                 <FormControl 
                   name="courses" 
                   value={this.state.courses} 
@@ -140,7 +183,7 @@ class VoteForm extends Component{
                   onChange={this.handleChange}
                 />
               </FormGroup>
-              <Button type="submit">
+              <Button bsStyle="success" bsSize="large" type="submit" disabled={this.validationState()}>
                 Submit
               </Button>
             </form>

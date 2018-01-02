@@ -42,9 +42,9 @@ return (
         </header>
         <br/>
         
-        <Route path="/" component={FullResult}/>
-        <Route exact path="/join_course_survey" component={VoteForm}/>
-        <Route exact path="/show_result" component={Results}/>
+        <Route path="/" render={FullResult}/>
+        <Route exact path="/join_course_survey" render={VoteForm}/>
+        <Route exact path="/show_result" render={Results}/>
       </div>
       </Router>
 );

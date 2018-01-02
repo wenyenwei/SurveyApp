@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, Row, Panel} from 'react-bootstrap';
+import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, Row, Panel, Image} from 'react-bootstrap';
 import VoteForm from './VoteForm';
 import Results from './Results';
 import * as apiCalls from './api';
@@ -13,7 +13,8 @@ class FullResult extends Component{
           survey: [],
           visible: false,
           courses: [],
-          maxNume: 1
+          maxNume: 1,
+          loading: false
         }
         this.addSurvey = this.addSurvey.bind(this);
         this.showResults = this.showResults.bind(this);
@@ -51,7 +52,6 @@ class FullResult extends Component{
     }
     countVotes(){
       let counts = {};
-      console.log(this.state.survey);
       this.state.survey.map((data) => {
         for (let course of data.courses){
           counts[course] = counts[course]+1 || 1;
@@ -82,17 +82,19 @@ class FullResult extends Component{
         ));
        let countResults = [];
        let courseId = 0;
+       this.state.loading = true;
        for (let course in this.state.courses){
-         console.log(course,this.state.courses[course]);
          courseId++;
           countResults.push(
             <Results 
+              style={{display: this.state.loading? 'none':'block'}}
               key = {courseId}
               maxNum = {this.state.maxNum}
               courseName = {course}
               courseCount = {this.state.courses[course]}
             />          
           );
+          this.state.loading = false;  
         }
 
     return(
@@ -135,7 +137,16 @@ class FullResult extends Component{
             <Row className="show-grid">
               <Col md={12}>
               <Panel>
-                {countResults} 
+                <Col md={4}></Col>
+                <Col md={4}>
+                <Image 
+                  style={{display: this.state.loading? 'block':'none'}} 
+                  src="https://loading.io/spinners/wave/lg.wave-ball-preloader.gif" 
+                  responsive
+                />
+                </Col>
+                <Col md={4}></Col>
+                <Col md={12}>{countResults}</Col>
               </Panel>
               </Col>
             </Row>        
