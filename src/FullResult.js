@@ -4,7 +4,7 @@ import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, R
 import VoteForm from './VoteForm';
 import Results from './Results';
 import * as apiCalls from './api';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 class FullResult extends Component{
     constructor(props){
@@ -111,18 +111,11 @@ class FullResult extends Component{
             <Nav>
               <NavItem eventKey={1}><Link to="/join_course_survey" className="Link">Join Course Survey</Link></NavItem>
               <NavItem eventKey={2}><Link to="/show_result" className="Link">Show Results</Link></NavItem>
-              <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1}>Action</MenuItem>
-                <MenuItem eventKey={3.2}>Another action</MenuItem>
-                <MenuItem eventKey={3.3}>Something else here</MenuItem>
-                <MenuItem divider />
-                <MenuItem eventKey={3.3}>Separated link</MenuItem>
-              </NavDropdown>
             </Nav>
-            <Nav pullRight>
+            {/*<Nav pullRight>
               <NavItem eventKey={1} href="#">Login</NavItem>
               <NavItem eventKey={2} href="#">Sign up</NavItem>
-            </Nav>
+            </Nav>*/}
           </Navbar.Collapse>
         </Navbar>  
         <header className="App-header">
@@ -162,7 +155,7 @@ class FullResult extends Component{
               <br/>
               <br/>
               <br/>
-                <Col md={12} style={{display: this.state.visible? 'block':'none'}}>
+                <Col md={12} className={this.state.visible? "showModal":"hideModal"}>
                   <Table striped bordered condensed hover>
                     <thead>
                       <tr>
@@ -197,11 +190,10 @@ class FullResult extends Component{
         );
         }}/>
         
-        <Route path="/" render={()=>{
-          return(
-          <div></div>
-        );
-        }}/>
+        <Route exact path="/" render={()=>
+          (<Redirect to="/join_course_survey"/>
+          )
+        }/>
       </div>
       </Router>
 

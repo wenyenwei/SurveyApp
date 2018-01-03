@@ -1,3 +1,71 @@
+.showModal{
+  display:block;
+  -webkit-animation-name: modalShow; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: modalShow;
+  animation-duration: 2s;  
+}
+.hideModal{
+  display:none;
+  -webkit-animation-name: modalHide; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: modalHide;
+  animation-duration: 2s;  
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes modalShow {
+    from {
+      display: none;
+      opacity: 0;
+      transform: translateY(0);
+    }
+    to {
+      display: block;
+      opacity: 1;
+      transform: translateY(1)
+    }
+}
+
+/* Standard syntax */
+@keyframes modalShow {
+    from {
+      display: none;
+      opacity: 0;
+      transform: translateY(0);
+    }
+    to {
+      display: block;
+      opacity: 1;
+      transform: translateY(1)
+    }
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes modalHide {
+    from {
+      display: block;
+      opacity: 1;
+      transform: translateY(1)
+    }
+    to {
+      display: none;
+      opacity: 0;
+      transform: translateY(0);
+    }
+}
+
+/* Standard syntax */
+@keyframes modalHide {
+    from {
+      display: block;
+      opacity: 1;
+      transform: translateY(1)
+    }
+    to {
+      display: none;
+      opacity: 0;
+      transform: translateY(0);
+    }
+}
 .mustFill{
   color: red;
 }

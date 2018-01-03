@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Row, Col, Panel, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
+import { withRouter } from 'react-router';
 
 
 class VoteForm extends Component{
@@ -63,6 +64,7 @@ class VoteForm extends Component{
     handleSubmit(){
         alert('Successfully submitted');
         this.props.addSurvey(this.state);
+        this.props.history.push('/show_result');
     }
 
     render(){
@@ -195,4 +197,4 @@ class VoteForm extends Component{
     }
 }
 
-export default VoteForm;
+export default withRouter(VoteForm);
