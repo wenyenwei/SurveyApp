@@ -1,3 +1,38 @@
+.countBar{
+}
+.button{
+  height: 60px;
+  background: none;
+  font: 700 22px 'Ubuntu', sans-serif;
+  padding: 20px;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+	background: #ecf0f1;
+}
+.formTable{
+    margin-top: 5%;
+  	width: 100%;
+  	height: 60px;
+  	background: none;
+  	border: none;
+  	border-bottom: 1px solid #34495e;
+  	outline: none;
+  	font: 300 20px 'Ubuntu', sans-serif;
+  	padding: 50px;
+  	color: #34495e;
+}
+.formInput{
+  	width: 100%;
+  	height: 60px;
+  	background: none;
+  	border: none;
+  	border-bottom: 1px solid #34495e;
+  	outline: none;
+  	font: 300 25px 'Ubuntu', sans-serif;
+  	padding: 20px;
+  	color: #34495e;
+}
 .showModal{
   display:block;
   -webkit-animation-name: modalShow; /* Safari 4.0 - 8.0 */
@@ -6,11 +41,13 @@
   animation-duration: 2s;  
 }
 .hideModal{
-  display:none;
   -webkit-animation-name: modalHide; /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
   animation-name: modalHide;
   animation-duration: 2s;  
+  transition: opacity 3s ease;
+  opacity:0;
+  display: none
 }
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes modalShow {
@@ -85,16 +122,41 @@
   margin-bottom: 0;
 }
 .courseName{
-  font-weight: bold;
-}
-.coursePanel:hover{
-  background-color: #ddd;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	font-size: 20px;
+	padding: 0 20px;
+	color: #34495e;
+	transition: all .3s ease;
 }
 .countBar{
   background-color: orange;
   color: white;
-  height: 30px;
-  padding: 0.5%;
+  height: 20%;
+  padding: 1.5%;
+  margin-top:2%;
+  -webkit-animation-name: showCountBar; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 2s; /* Safari 4.0 - 8.0 */
+  animation-name: showCountBar;
+  animation-duration: 2s;
+}
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes showCountBar {
+    from {
+      width: 5%;
+    }
+    to {
+    }
+}
+
+/* Standard syntax */
+@keyframes showCountBar {
+    from {
+      width: 5%;
+    }
+    to {
+    }
 }
 
 .example-enter {
@@ -116,7 +178,14 @@
 }
 
 .Form{
-  line-height: 200%;
+	width: 100%;
+	height: auto;
+	line-height: 300%;
+	font-size: 20px;
+	padding: 0 20px;
+	color: #34495e;
+	transition: all .3s ease;
+	background: none
 }
 
 .App {
@@ -139,7 +208,7 @@
 }
 
 .App-title {
-  font-size: 1.5em;
+  font: 700 22px 'Ubuntu', sans-serif;
 }
 
 .App-intro {

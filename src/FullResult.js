@@ -5,6 +5,7 @@ import VoteForm from './VoteForm';
 import Results from './Results';
 import * as apiCalls from './api';
 import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import 'font-awesome/css/font-awesome.min.css';
 
 class FullResult extends Component{
     constructor(props){
@@ -86,7 +87,7 @@ class FullResult extends Component{
        for (let course in this.state.courses){
          courseId++;
           countResults.push(
-            <Results 
+            <Results
               style={{display: this.state.loading? 'none':'block'}}
               key = {courseId}
               maxNum = {this.state.maxNum}
@@ -145,18 +146,20 @@ class FullResult extends Component{
             </Row>        
             <Row className="show-grid">
               <Col md={12}>
-                <Button 
-                  bsSize="lg"
+                <Button
+                  className="button"
+                  bsSize="large"
                   onClick={this.showResults}/*global showResults*/
                 >
-                {this.state.visible? "Hide Results":"Show Full Results"}
+                {this.state.visible? 
+                  <p>Hide Results<i className="fa fa-chevron-up"></i></p>
+                  :
+                  <p>Show Full Results<i className="fa fa-chevron-down"></i></p>
+                }
                 </Button>
               </Col>
-              <br/>
-              <br/>
-              <br/>
-                <Col md={12} className={this.state.visible? "showModal":"hideModal"}>
-                  <Table striped bordered condensed hover>
+                <Col md={12} sm={12} className={this.state.visible? "showModal":"hideModal"}>
+                  <Table striped bordered condensed hover className="formTable">
                     <thead>
                       <tr>
                         <th>#</th>

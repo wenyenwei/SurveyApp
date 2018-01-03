@@ -14,7 +14,7 @@ class VoteForm extends Component{
           age: '',
           courses: [],
           note: '',
-          complete: false
+          complete: false,
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,16 +70,16 @@ class VoteForm extends Component{
     render(){
         return(
           <Row className="show-grid">
-           <Col md={3}/>
-           <Col md={6}>
-            <Panel>
+           <Col md={1}/>
+           <Col md={10}>
             {/*<form className="Form" onSubmit={this.handleSubmit}>*/}
             <form className="Form" onSubmit={(e) => {
               //eslint-disable-next-line
               if(confirm('Are you sure to submit?')){this.handleSubmit()};}}
             >
-              <h4>Course Prior Survey</h4>
+              <ControlLabel>Course Prior Survey</ControlLabel>
               <FormGroup>
+                <Row>
                  <Col componentClass={ControlLabel} sm={1}>
                   <span className="mustFill">*</span>
                   Name
@@ -91,6 +91,7 @@ class VoteForm extends Component{
                     name="name"
                     value={this.state.name}
                     onChange={this.handleChange}
+                    className="formInput"
                   />
                 </Col>
                 <Col componentClass={ControlLabel} sm={1}>
@@ -103,17 +104,21 @@ class VoteForm extends Component{
                     placeholder="janedoe@mail.com"
                     name="email"
                     value={this.state.email}
-                    onChange={this.handleChange}                  
+                    onChange={this.handleChange}  
+                    className="formInput"
                   />
                 </Col>
+                </Row>
               </FormGroup>
               <br/>
               <FormGroup>
+                <Row>
                 <Col componentClass={ControlLabel} sm={1}>
                   <span className="mustFill">*</span>
                   Gender
                 </Col>
-                <Radio 
+                <Col sm={3}>
+                <Radio
                   type="radio"
                   name="gender"
                   value="female"
@@ -122,6 +127,8 @@ class VoteForm extends Component{
                 >
                   Female
                 </Radio>
+                </Col>
+                <Col sm={2}>
                 <Radio 
                   type="radio"
                   name="gender"
@@ -131,6 +138,8 @@ class VoteForm extends Component{
                 >
                   Male
                 </Radio>
+                </Col>
+                <Col sm={6}>
                  <Radio 
                   type="radio"
                   name="gender"
@@ -140,14 +149,24 @@ class VoteForm extends Component{
                 >
                   Prefer Not to state
                 </Radio>
+                </Col>
+                </Row>
               </FormGroup>
               <FormGroup controlId="formControlsSelect">
+                <Row>
                 <Col componentClass={ControlLabel} sm={1}>
                   <span className="mustFill">*</span>
                   Age
                 </Col>
                 <Col sm={11}>
-                  <FormControl name="age" value={this.state.age} onChange={this.handleChange} componentClass="select" placeholder="select">
+                  <FormControl 
+                    name="age" 
+                    value={this.state.age} 
+                    onChange={this.handleChange} 
+                    componentClass="select" 
+                    placeholder="select"
+                    className="formInput"
+                  >
                     <option value="">Select</option>
                     <option value="under 20">Under 20</option>
                     <option value="20-30">20-30</option>
@@ -155,8 +174,10 @@ class VoteForm extends Component{
                     <option value="40-50">40-50</option>
                   </FormControl>
                 </Col>
+                </Row>
               </FormGroup>
               <FormGroup controlId="formControlsSelectMultiple">
+                <Row>
                 <ControlLabel>
                   <span className="mustFill">*</span>
                   Courses you're interested in
@@ -167,6 +188,7 @@ class VoteForm extends Component{
                   onChange={this.handleChange} 
                   multiple={true} 
                   componentClass="select" 
+                  className="formInput"
                 >
                   <option value="Python Django">Python Django</option>
                   <option value="Ruby on Rails">Ruby on Rails</option>
@@ -174,8 +196,10 @@ class VoteForm extends Component{
                   <option value="Machine Learning">Machine Learning</option>
                   <option value="SQL">SQL</option>
                 </FormControl>
+                </Row>
               </FormGroup>
               <FormGroup controlId="formControlsTextarea">
+                <Row>
                 <ControlLabel>Is there any other topics you'd like to learn?</ControlLabel>
                 <FormControl 
                   componentClass="textarea" 
@@ -183,15 +207,18 @@ class VoteForm extends Component{
                   name="note"
                   value={this.state.note}
                   onChange={this.handleChange}
+                  className="formInput"
                 />
+                </Row>
               </FormGroup>
-              <Button bsStyle="success" bsSize="large" type="submit" disabled={this.validationState()}>
-                Submit
+              <Row>
+              <Button className="button" bsSize="large" type="submit" disabled={this.validationState()} block>
+                SUBMIT
               </Button>
+              </Row>
             </form>
-            </Panel>
            </Col>
-           <Col md={3}/>
+           <Col md={1}/>
           </Row>
         );
     }
