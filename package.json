@@ -5,6 +5,7 @@
   "dependencies": {
     "express": "^4.16.2",
     "font-awesome": "^4.7.0",
+    "radium": "^0.19.6",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-bootstrap": "^0.31.5",

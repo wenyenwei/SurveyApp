@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Row, Col, Panel, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
+import {Row, Col, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 
 
@@ -48,7 +48,7 @@ class VoteForm extends Component{
 
       const emptyRemind = [];
         for (let item in this.state){
-          if (this.state[item].length == 0 && item!== 'note'){
+          if (this.state[item].length === 0 && item!== 'note'){
             emptyRemind.push(item)
           }
         }

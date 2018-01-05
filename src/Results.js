@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Panel, Table} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 
 const Results = ({courseName, courseCount, maxNum}) => (
             <Row className="coursePanel">

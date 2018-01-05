@@ -6,6 +6,7 @@ import Results from './Results';
 import * as apiCalls from './api';
 import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
+import Auth from './Auth/Auth';
 
 class FullResult extends Component{
     constructor(props){
@@ -113,10 +114,10 @@ class FullResult extends Component{
               <NavItem eventKey={1}><Link to="/join_course_survey" className="Link">Join Course Survey</Link></NavItem>
               <NavItem eventKey={2}><Link to="/show_result" className="Link">Show Results</Link></NavItem>
             </Nav>
-            {/*<Nav pullRight>
-              <NavItem eventKey={1} href="#">Login</NavItem>
+            <Nav pullRight>
+              <NavItem eventKey={1}><Link to="/login" className="Link">Login</Link></NavItem>
               <NavItem eventKey={2} href="#">Sign up</NavItem>
-            </Nav>*/}
+            </Nav>
           </Navbar.Collapse>
         </Navbar>  
         <header className="App-header">
@@ -197,6 +198,17 @@ class FullResult extends Component{
           (<Redirect to="/join_course_survey"/>
           )
         }/>
+        
+        <Route exact path="/login" render={()=>
+          {
+          return(
+          <Grid>
+            <Row className="show-grid">
+              <Auth />
+            </Row>
+          </Grid>
+        );
+        }}/>
       </div>
       </Router>
 
