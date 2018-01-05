@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import Input from '../Components/UI/Input/Input';
 import {Button} from 'react-bootstrap';
 import classes from './Auth.css';
-import Radium from 'radium';
+import { connect } from 'react-redux';
+import Spinner from '../Components/UI/Spinner/Spinner';
+import * as actions from '../store/actions/index';
+
 
 class Auth extends Component{
     constructor(props){
@@ -37,14 +40,22 @@ class Auth extends Component{
               valid: false,
               touched: false
             }
-          }
+          },
+          isSignup: true
         }        
     }
-    componentWillMount(){
-        console.log('classes', classes.Auth);
+    
+    switchAuthModeHandler = () => {
+      this.setState(prevState => {
+        return {isSignup: !prevState.isSignup}
+      });
     }
+
     checkValidity(value, rules) {
         let isValid = true;
+        if (!rules){
+            return true;
+        }
         
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
@@ -56,6 +67,11 @@ class Auth extends Component{
 
         if (rules.maxLength) {
             isValid = value.length <= rules.maxLength && isValid
+        }
+        
+        if (rules.isEmail){
+            const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            isValid = pattern.test(value) && isValid
         }
 
         return isValid;
@@ -73,6 +89,13 @@ class Auth extends Component{
         }
         this.setState({controls: updateControls});
     }
+    
+    submitHandler = (event) => {
+      event.preventDefault();
+      console.log(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+
+      this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
+    }
 
     render(){
       const formElementsArray = [];
@@ -82,7 +105,8 @@ class Auth extends Component{
           config: this.state.controls[key]
         })
       }
-      const form = formElementsArray.map(formElement => {return(
+      let form = formElementsArray.map(formElement => {
+        return(
         <Input
           key={formElement.id}
           elementType={formElement.config.elementType}
@@ -93,18 +117,48 @@ class Auth extends Component{
           touched={formElement.config.touched}
           changed={(event) => this.inputChangeHandler(event, formElement.id)}
         />
-      )});
-      const array = ['red', 'bold'].join(' ');
+      );
+        if (this.props.loading){
+          form = <Spinner />
+        }
+      });
+        
+        let errorMessage = null;
+        
+        if (this.props.error){
+          return errorMessage = (
+            <p>{this.props.error.message}</p>
+          )
+        }      
+      
       return(
           <div className={classes.Auth}>
+            {errorMessage}
             <form>
               {form}
-             <Button bsStyle='success'>SUBMIT</Button>   
-             <p className={array}>test words</p>
+             <Button onClick={(e)=>this.submitHandler(e)} bsStyle='success'>SUBMIT</Button>   
             </form>
+            <Button 
+              onClick={this.switchAuthModeHandler}
+              bsStyle='danger'
+            >
+              SWITCH TO {this.state.isSignup? 'SIGN IN':'SIGN UP'}
+            </Button>
           </div>
         );
     }
 }
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    error: state.error
+  }
+}
 
-export default Radium(Auth);
+const mapDispatchToProps = dispatch => {
+    return {
+      onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

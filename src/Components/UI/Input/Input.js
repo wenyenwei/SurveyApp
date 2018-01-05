@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {ControlLabel} from 'react-bootstrap';
 import classes from './Input.css';
 
 const input = ( props ) => {
@@ -8,6 +8,8 @@ const input = ( props ) => {
 
     if (props.invalid && props.shouldValidate && props.touched) {
         inputClasses.push(classes.Invalid);
+    }else if (!props.invalid && props.shouldValidate && props.touched){
+        inputClasses.push(classes.Valid);
     }
 
     switch ( props.elementType ) {
@@ -28,6 +30,22 @@ const input = ( props ) => {
         case ( 'select' ):
             inputElement = (
                 <select
+                    className={inputClasses.join(' ')}
+                    value={props.value}
+                    onChange={props.changed}>
+                    <option key="select" value="" selected disabled hidden>Select</option>
+                    {props.elementConfig.options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.displayValue}
+                        </option>
+                    ))}
+                </select>
+            );
+            break;
+        case ( 'multi-select' ):
+            inputElement = (
+                <select
+                    multiple
                     className={inputClasses.join(' ')}
                     value={props.value}
                     onChange={props.changed}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
+import styles from './App.css';
+import classes from './Auth/Auth.css';
 import {Navbar, NavItem, Nav, NavDropdown, MenuItem} from 'react-bootstrap';
 import Results from './Results';
 import VoteForm from './VoteForm';
@@ -7,6 +8,13 @@ import FullResult from './FullResult';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 class NavbarInstance extends Component{
+    constructor(props){
+        super(props);
+    }
+    componentWillMount(){
+        alert('working');
+        console.log('classes', classes);
+    }
 render(){
 return (
        <Router>
@@ -36,9 +44,9 @@ return (
             </Nav>
           </Navbar.Collapse>
         </Navbar>  
-        <header className="App-header">
-          <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className="App-logo" alt="logo" />
-          <h1 className="App-title">WELCOME TO SURVEYAPP</h1>
+        <header className={classes.header}>
+          <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className={classes.logo} alt="logo" />
+          <h1 className={classes.title}>WELCOME TO SURVEYAPP</h1>
         </header>
         <br/>
         

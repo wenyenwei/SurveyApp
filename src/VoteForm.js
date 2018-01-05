@@ -2,28 +2,215 @@ import React, { Component } from 'react';
 import './App.css';
 import {Row, Col, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
+import Input from './Components/UI/Input/Input';
+
 
 
 class VoteForm extends Component{
     constructor(props){
       super(props);
+      // this.state = {
+      //     name: '',
+      //     email: '',
+      //     gender: '',
+      //     age: '',
+      //     courses: [],
+      //     note: '',
+      //     complete: false,
+      // }
       this.state = {
-          name: '',
-          email: '',
-          gender: '',
-          age: '',
-          courses: [],
-          note: '',
-          complete: false,
+          controls:{
+            name: {
+              elementType: 'input',
+              elementConfig: {
+                type: 'text',
+                placeholder: 'Enter your name...'
+              },
+              value: '',
+              validation: {
+                required: true
+              },
+              valid: false,
+              touched: false
+            },
+            email: {
+              elementType: 'input',
+              elementConfig: {
+                type: 'email',
+                placeholder: 'example@mail.com'
+              },
+              value: '',
+              validation: {
+                required: true,
+                isEmail: true
+              },
+              valid: false,
+              touched: false
+            },
+            gender: {
+              elementType: 'select',
+              elementConfig: {
+                type: 'text',
+                placeholder: 'Select',
+                options: [
+                  {
+                    value: 'Female',
+                    displayValue: 'Female'
+                  },
+                  {
+                    value: 'Male',
+                    displayValue: 'Male'
+                  },
+                  {
+                    value: 'Prefer not to state',
+                    displayValue: 'Prefer not to state'
+                  }
+                ]
+              },
+              value: '',
+              validation: {
+                required: true
+              },
+              valid: false,
+              touched: false
+            },
+            age: {
+              elementType: 'select',
+              elementConfig: {
+                type: 'text',
+                placeholder: 'Select',
+                options: [
+                  {
+                    value: 'Under 20',
+                    displayValue: 'Under 20'
+                  },
+                  {
+                    value: '20-29',
+                    displayValue: '20-29'
+                  },
+                  {
+                    value: '30-39',
+                    displayValue: '30-39'
+                  },
+                  {
+                    value: '40-49',
+                    displayValue: '40-49'
+                  },
+                  {
+                    value: 'Above 50',
+                    displayValue: 'Above 50'
+                  }
+                ]
+              },
+              value: '',
+              validation: {
+                required: true
+              },
+              valid: false,
+              touched: false
+            },
+            courses: {
+              elementType: 'multi-select',
+              elementConfig: {
+                type: 'text',
+                placeholder: 'Select',
+                options: [
+                  {
+                    value: 'Python Django',
+                    displayValue: 'Python Django'
+                  },
+                  {
+                    value: 'Ruby On Rails',
+                    displayValue: 'Ruby On Rails'
+                  },
+                  {
+                    value: 'NodeJS',
+                    displayValue: 'NodeJS'
+                  },
+                  {
+                    value: 'Machine Learning',
+                    displayValue: 'Machine Learning'
+                  },
+                  {
+                    value: 'SQL',
+                    displayValue: 'SQL'
+                  }
+                ]
+              },
+              value: [],
+              validation: {
+                required: true
+              },
+              valid: false,
+              touched: false,
+            },
+            note: {
+              elementType: 'textarea',
+              elementConfig: {
+                type: 'text',
+                placeholder: 'Enter text...'
+              },
+              value: '',
+              validation: {
+                required: false
+              },
+              valid: false,
+              touched: false
+            }
+         },
+        complete: false
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.checkComplete = this.checkComplete.bind(this);
     }
+    checkValidity(value, rules) {
+        let isValid = true;
+        if (!rules){
+            return true;
+        }
+        
+        if (rules.required) {
+            isValid = value.trim() !== '' && isValid;
+        }
 
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid
+        }
+
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid
+        }
+        
+        if (rules.isEmail){
+            const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        return isValid;
+    }
+    
+    inputChangeHandler = (event, controlName) => {
+        this.setState({validationState: null});
+        let array;
+        if (controlName === 'courses'){
+          array = this.state.controls[controlName].value;
+          array.indexOf(event.target.value) === -1? array.push(event.target.value):array.splice(array.indexOf(event.target.value), 1);
+        }
+        const updateControls = {
+            ...this.state.controls,
+            [controlName]: {
+                ...this.state.controls[controlName],
+                value: controlName === 'courses'? array : event.target.value,
+                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+                touched: true
+            }
+        }
+        this.setState({controls: updateControls});
+    }
     
     handleChange(event){
-      this.setState({validationState: null});
+      this.validationState();
       const target = event.target;
       let value = target.type === 'checkbox' ? target.checked : target.value;
       const name = target.name;
@@ -35,14 +222,21 @@ class VoteForm extends Component{
       this.setState({[name]: value});
     }
     validationState(){
-     if(this.state.name.length>0 && 
-        this.state.email.length>0 && 
-        this.state.gender.length>0 && 
-        this.state.age.length>0 && 
-        this.state.courses.length>0){
-        return false;
-      }
-      return true;
+        let count = 0;
+        for (let key in this.state.controls){
+          if (this.state.controls[key].validation.required && this.state.controls[key].valid){
+            count++
+          }
+        } 
+        return count >= 5? false : true;
+    // if(this.state.name.length>0 && 
+    //     this.state.email.length>0 && 
+    //     this.state.gender.length>0 && 
+    //     this.state.age.length>0 && 
+    //     this.state.courses.length>0){
+    //     return false;
+    //   }
+    //   return true;
     }
     checkComplete(event){        
 
@@ -61,24 +255,57 @@ class VoteForm extends Component{
       }
     }
     
-    handleSubmit(){
+    handleSubmit(e){
         alert('Successfully submitted');
-        this.props.addSurvey(this.state);
+        const resultsArray = [];
+        for (let key in this.state.controls){
+          resultsArray.push({
+            [key]: this.state.controls[key].value
+          })
+        }
+        alert(JSON.stringify(resultsArray));
+        e.preventDefault();
+        
+        this.props.addSurvey(resultsArray);
         this.props.history.push('/show_result');
     }
 
     render(){
+      const formElementsArray = [];
+      for (let key in this.state.controls){
+        formElementsArray.push({
+          id: key,
+          config: this.state.controls[key]
+        })
+      }
+      let form = formElementsArray.map(formElement => {
         return(
-          <Row className="show-grid">
-           <Col md={1}/>
-           <Col md={10}>
+          <FormGroup key={formElement.id}>
+          <Row>
+          <ControlLabel>{(formElement.id).toUpperCase()}</ControlLabel>
+          <Input
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
+            changed={(event) => this.inputChangeHandler(event, formElement.id)}
+          />
+          </Row>
+          </FormGroup>
+      );
+    }
+  );
+        return(
+          <Row>
             {/*<form className="Form" onSubmit={this.handleSubmit}>*/}
             <form className="Form" onSubmit={(e) => {
               //eslint-disable-next-line
-              if(confirm('Are you sure to submit?')){this.handleSubmit()};}}
-            >
-              <ControlLabel>Course Prior Survey</ControlLabel>
-              <FormGroup>
+              if(confirm('Are you sure to submit?')){this.handleSubmit(e);}
+            }}>
+              {form}
+              {/*<FormGroup>
                 <Row>
                  <Col componentClass={ControlLabel} sm={1}>
                   <span className="mustFill">*</span>
@@ -210,15 +437,13 @@ class VoteForm extends Component{
                   className="formInput"
                 />
                 </Row>
-              </FormGroup>
+              </FormGroup>*/}
               <Row>
-              <Button className="button" bsSize="large" type="submit" disabled={this.validationState()} block>
+              <Button className="button" bsSize="large" type="submit" block disabled={this.validationState()}> {/*disabled={this.validationState()}*/}
                 SUBMIT
               </Button>
               </Row>
             </form>
-           </Col>
-           <Col md={1}/>
           </Row>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, Row, Panel, Image} from 'react-bootstrap';
 import VoteForm from './VoteForm';
 import Results from './Results';
@@ -7,6 +7,7 @@ import * as apiCalls from './api';
 import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 import 'font-awesome/css/font-awesome.min.css';
 import Auth from './Auth/Auth';
+
 
 class FullResult extends Component{
     constructor(props){
@@ -71,7 +72,8 @@ class FullResult extends Component{
     }
   
     render(){
-        const surveyData = this.state.survey.map((data, i) => (
+        const surveyData = this.state.survey.map((data, i) => {
+          return(
           <tr key={data._id}>
             <td>{i+1}</td>
             <td>{data.name}</td>
@@ -81,7 +83,7 @@ class FullResult extends Component{
             <td>{data.courses.join('/ ')}</td>
             <td>{data.text}</td>
           </tr>          
-        ));
+        )});
        let countResults = [];
        let courseId = 0;
        this.state.loading = true;
@@ -102,7 +104,7 @@ class FullResult extends Component{
     return(
       <Router>
        <div>
-        <Navbar inverse collapseOnSelect>
+        <Navbar inverse collapseOnSelect className={classes.navbar}>
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">SurveyApp</Link>
@@ -111,44 +113,60 @@ class FullResult extends Component{
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1}><Link to="/join_course_survey" className="Link">Join Course Survey</Link></NavItem>
-              <NavItem eventKey={2}><Link to="/show_result" className="Link">Show Results</Link></NavItem>
+              <NavItem eventKey={1}><Link to="/join_course_survey" className={classes.Link}>Join Course Survey</Link></NavItem>
+              <NavItem eventKey={2}><Link to="/show_result" className={classes.Link}>Show Results</Link></NavItem>
             </Nav>
             <Nav pullRight>
-              <NavItem eventKey={1}><Link to="/login" className="Link">Login</Link></NavItem>
+              <NavItem eventKey={1}><Link to="/login" className={classes.Link}>Login</Link></NavItem>
               <NavItem eventKey={2} href="#">Sign up</NavItem>
             </Nav>
           </Navbar.Collapse>
-        </Navbar>  
-        <header className="App-header">
-          <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className="App-logo" alt="logo" />
-          <h1 className="App-title">WELCOME TO SURVEYAPP</h1>
+        </Navbar>
+        <header className={classes.AppHeader}>
+          <Grid>
+          <Row className="show-grid">
+          <Col lg={5} md={5} sm={5}></Col>
+          <Col lg={2} md={2} sm={2}>
+          <img src="http://www.industrialui.com/wp-content/uploads/2016/12/256x256.png" className={classes.AppLogo} alt="logo" />
+          </Col>
+          <Col lg={5} md={5} sm={5}></Col>
+          </Row>
+          <Row className="show-grid">
+          <Col lg={4} md={4} sm={4}></Col>
+          <Col lg={4} md={4} sm={4}>
+          <h1 className={classes.AppTitle}>Course Prior Survey</h1>
+          </Col>
+          <Col lg={4} md={4} sm={4}></Col>
+          </Row>
+        </Grid>
+
         </header>
-        <br/>
-        
+        <br />
+
         <Route exact path="/show_result" render={() => {         
           return(
           <Grid>
             <Row className="show-grid">
-              <Col md={12}>
+              <Col lg={12} md={12} sm={12}>
               <Panel>
-                <Col md={5}></Col>
-                <Col md={2}>
+                <Col lg={5} md={5} sm={5}></Col>
+                <Col lg={2} md={2} sm={2}>
                 <Image 
                   style={{display: this.state.loading? 'block':'none'}} 
                   src="https://loading.io/spinners/wave/lg.wave-ball-preloader.gif" 
                   responsive
                 />
                 </Col>
-                <Col md={5}></Col>
-                <Col md={12}>{countResults}</Col>
+                <Col lg={5} md={5} sm={5}></Col>
+                <Col lg={12} md={12} sm={12}>{countResults}</Col>
               </Panel>
               </Col>
             </Row>        
             <Row className="show-grid">
-              <Col md={12}>
+              <Col lg={4} md={4} sm={4}></Col>
+              <Col lg={4} md={4} sm={4}>
                 <Button
-                  className="button"
+                  className={classes.button}
                   bsSize="large"
                   onClick={this.showResults}/*global showResults*/
                 >
@@ -159,8 +177,11 @@ class FullResult extends Component{
                 }
                 </Button>
               </Col>
-                <Col md={12} sm={12} className={this.state.visible? "showModal":"hideModal"}>
-                  <Table striped bordered condensed hover className="formTable">
+              <Col lg={4} md={4} sm={4}></Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12} className={this.state.visible? classes.showModal:classes.hideModal}>
+                  <Table striped bordered condensed hover className={classes.formTable}>
                     <thead>
                       <tr>
                         <th>#</th>
@@ -186,9 +207,13 @@ class FullResult extends Component{
           return(
           <Grid>
             <Row className="show-grid">
-              <VoteForm 
-                addSurvey={this.addSurvey}
-              />
+              <Col lg={2} md={2} sm={2} xs={2} xxs={2} />
+              <Col lg={8} md={8} sm={8} xs={8} xxs={8}>
+                <VoteForm 
+                  addSurvey={this.addSurvey}
+                />
+              </Col>
+              <Col lg={2} md={2} sm={2} xs={2} xxs={2} />
             </Row>
           </Grid>
         );
@@ -204,7 +229,7 @@ class FullResult extends Component{
           return(
           <Grid>
             <Row className="show-grid">
-              <Auth />
+                <Auth />
             </Row>
           </Grid>
         );

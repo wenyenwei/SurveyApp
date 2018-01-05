@@ -9,6 +9,7 @@
 body {
 	font-family: 'Montserrat', sans-serif;
 	background: #ecf0f1;
+	margin-bottom: 5%
 }
 .formTable{
     margin-top: 5%;
@@ -193,12 +194,12 @@ body {
   margin-bottom: 10%;
 }
 
-.App-logo {
+.AppLogo {
   animation: App-logo-spin infinite 5s alternate;
   height: 80px;
 }
 
-.App-header {
+.AppHeader {
   background-color: yellow;
   height: 180px;
   padding: 20px;
@@ -207,7 +208,7 @@ body {
   font-weight: bold;
 }
 
-.App-title {
+.AppTitle {
   font: 700 22px 'Ubuntu', sans-serif;
 }
 
