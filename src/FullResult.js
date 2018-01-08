@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import classes from './App.css';
 import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, Row, Panel, Image} from 'react-bootstrap';
+import 'font-awesome/css/font-awesome.min.css';
+import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import classes from './App.css';
+import * as apiCalls from './api';
+import * as actions from './store/actions/index';
 import VoteForm from './VoteForm';
 import Results from './Results';
-import * as apiCalls from './api';
-import {BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
-import 'font-awesome/css/font-awesome.min.css';
 import Auth from './Auth/Auth';
+import SurveyData from './SurveyData';
 
 
 class FullResult extends Component{
@@ -17,7 +21,7 @@ class FullResult extends Component{
           visible: false,
           courses: [],
           maxNume: 1,
-          loading: false
+          loading: true
         }
         this.addSurvey = this.addSurvey.bind(this);
         this.showResults = this.showResults.bind(this);
@@ -51,7 +55,14 @@ class FullResult extends Component{
             this.setState({surveys: surveys});
     }
     showResults(){
-      this.setState({visible:!this.state.visible});
+      if (this.props.token){
+        this.setState({visible:!this.state.visible});
+      }else{
+        if (confirm('You need to login to view this section')){ // eslint-disable-line
+          return (<Redirect to='/login' push/>);
+          alert('redirect is still not working');       
+        };
+      }
     }
     countVotes(){
       let counts = {};
@@ -70,20 +81,12 @@ class FullResult extends Component{
         }
       this.setState({courses: counts, maxNum: count});
     }
+
+    logout(){
+
+    } 
   
     render(){
-        const surveyData = this.state.survey.map((data, i) => {
-          return(
-          <tr key={data._id}>
-            <td>{i+1}</td>
-            <td>{data.name}</td>
-            <td>{data.email}</td>
-            <td>{data.gender}</td>
-            <td>{data.age}</td>
-            <td>{data.courses.join('/ ')}</td>
-            <td>{data.text}</td>
-          </tr>          
-        )});
        let countResults = [];
        let courseId = 0;
        this.state.loading = true;
@@ -98,7 +101,7 @@ class FullResult extends Component{
               courseCount = {this.state.courses[course]}
             />          
           );
-          this.state.loading = false;  
+          this.state.loading = false; //放這個位置滿奇怪的，求解
         }
 
     return(
@@ -116,10 +119,17 @@ class FullResult extends Component{
               <NavItem eventKey={1}><Link to="/join_course_survey" className={classes.Link}>Join Course Survey</Link></NavItem>
               <NavItem eventKey={2}><Link to="/show_result" className={classes.Link}>Show Results</Link></NavItem>
             </Nav>
+          {this.props.token? 
+            <Nav pullRight>
+                <NavItem>Welcome {this.props.email}</NavItem>
+                <NavItem eventKey={1}><Link to="/logout" className={classes.Link}>Logout</Link></NavItem>
+            </Nav>
+              :
             <Nav pullRight>
               <NavItem eventKey={1}><Link to="/login" className={classes.Link}>Login</Link></NavItem>
-              <NavItem eventKey={2} href="#">Sign up</NavItem>
+              <NavItem eventKey={2} href="/login">Sign up</NavItem>
             </Nav>
+          }
           </Navbar.Collapse>
         </Navbar>
         <header className={classes.AppHeader}>
@@ -194,7 +204,9 @@ class FullResult extends Component{
                       </tr>
                     </thead>
                     <tbody>
-                      {surveyData}
+                      <SurveyData 
+                        surveyDataList = {this.state.survey}
+                      />
                     </tbody>
                   </Table>
                </Col>       
@@ -224,16 +236,14 @@ class FullResult extends Component{
           )
         }/>
         
-        <Route exact path="/login" render={()=>
-          {
-          return(
-          <Grid>
-            <Row className="show-grid">
-                <Auth />
-            </Row>
-          </Grid>
-        );
-        }}/>
+        <Route exact path="/login" component={Auth}/>
+
+        <Route exact path="/logout" render={()=>{
+          alert('successfully logout');
+          this.props.logout();
+          return(<Redirect to="/login"/>)
+          }}
+        />
       </div>
       </Router>
 
@@ -242,4 +252,18 @@ class FullResult extends Component{
     }
 }
 
-export default FullResult;
+const mapStateToProps = state => {
+  return {
+    token: state.token,
+    email: state.email
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+      logout: () => dispatch(actions.logout())
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FullResult));
+

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Input from '../Components/UI/Input/Input';
-import {Button} from 'react-bootstrap';
+import {Button, Grid, Row, Col, Image} from 'react-bootstrap';
 import classes from './Auth.css';
 import { connect } from 'react-redux';
 import Spinner from '../Components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
+import * as ErrorMsg from './ErrorMsg';
 
 
 class Auth extends Component{
@@ -41,13 +42,13 @@ class Auth extends Component{
               touched: false
             }
           },
-          isSignup: true
-        }        
+          isSignup: false
+        };        
     }
     
     switchAuthModeHandler = () => {
       this.setState(prevState => {
-        return {isSignup: !prevState.isSignup}
+        return {isSignup: !prevState.isSignup};
       });
     }
 
@@ -62,16 +63,16 @@ class Auth extends Component{
         }
 
         if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
+            isValid = value.length >= rules.minLength && isValid;
         }
 
         if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
+            isValid = value.length <= rules.maxLength && isValid;
         }
         
         if (rules.isEmail){
             const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            isValid = pattern.test(value) && isValid
+            isValid = pattern.test(value) && isValid;
         }
 
         return isValid;
@@ -86,14 +87,12 @@ class Auth extends Component{
                 valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
                 touched: true
             }
-        }
+        };
         this.setState({controls: updateControls});
     }
-    
+
     submitHandler = (event) => {
       event.preventDefault();
-      console.log(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
-
       this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
     }
 
@@ -103,7 +102,7 @@ class Auth extends Component{
         formElementsArray.push({
           id: key,
           config: this.state.controls[key]
-        })
+        });
       }
       let form = formElementsArray.map(formElement => {
         return(
@@ -118,33 +117,86 @@ class Auth extends Component{
           changed={(event) => this.inputChangeHandler(event, formElement.id)}
         />
       );
-        if (this.props.loading){
-          form = <Spinner />
-        }
+
       });
         
         let errorMessage = null;
         
         if (this.props.error){
-          return errorMessage = (
-            <p>{this.props.error.message}</p>
-          )
+          let modiError = '';
+          switch(this.props.error.message){
+            case 'EMAIL_EXISTS':
+              modiError = ErrorMsg.EMAIL_EXISTS;
+              break;
+            case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+              modiError = ErrorMsg.TOO_MANY_ATTEMPTS_TRY_LATER;
+              break;
+            case 'EMAIL_NOT_FOUND':
+              modiError = ErrorMsg.EMAIL_NOT_FOUND;
+              break;
+            case 'INVALID_PASSWORD':
+              modiError = ErrorMsg.INVALID_PASSWORD;
+              break;
+            case 'USER_DISABLED':
+              modiError = ErrorMsg.USER_DISABLED;
+          }
+          errorMessage = (
+            <p 
+              style={{display: 'block'}} 
+              className={classes.errorMessage}
+            >
+              {modiError}
+            </p>
+          );
         }      
       
       return(
+        <Grid>
+          <Row className="show-grid">
           <div className={classes.Auth}>
             {errorMessage}
-            <form>
-              {form}
-             <Button onClick={(e)=>this.submitHandler(e)} bsStyle='success'>SUBMIT</Button>   
-            </form>
-            <Button 
-              onClick={this.switchAuthModeHandler}
-              bsStyle='danger'
-            >
-              SWITCH TO {this.state.isSignup? 'SIGN IN':'SIGN UP'}
-            </Button>
+            <Row>
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4}/>
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4}>
+                <Image 
+                  style={{display: this.props.loading? 'block':'none'}} 
+                  src="https://loading.io/spinners/wave/lg.wave-ball-preloader.gif" 
+                  responsive
+                />  
+              </Col>              
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4}/>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12} xs={12} xxs={12}>
+                <form>        
+                  {form}
+                  <Button 
+                    onClick={(e)=>this.submitHandler(e)} 
+                    bsStyle="success" 
+                    bsSize="large" 
+                    block
+                  >
+                    SUBMIT
+                  </Button>   
+                </form>              
+              </Col>
+            </Row>
+            <br/>
+            <Row>
+              <Col lg={12} md={12} sm={12} xs={12} xxs={12}>
+                <Button 
+                  onClick={this.switchAuthModeHandler}
+                  bsStyle='danger'
+                  bsSize="large" 
+                  block
+                >
+                  SWITCH TO {this.state.isSignup? 'SIGN IN':'SIGN UP'}
+                </Button>                
+              </Col>
+            </Row>
           </div>
+        </Row>
+      </Grid>
         );
     }
 }
@@ -162,3 +214,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+
+
+

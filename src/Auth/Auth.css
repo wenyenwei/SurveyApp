@@ -13,3 +13,10 @@
         width: 500px;
     }
 }
+
+.errorMessage{
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    display: none
+}
