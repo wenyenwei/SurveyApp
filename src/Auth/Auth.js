@@ -3,7 +3,6 @@ import Input from '../Components/UI/Input/Input';
 import {Button, Grid, Row, Col, Image} from 'react-bootstrap';
 import classes from './Auth.css';
 import { connect } from 'react-redux';
-import Spinner from '../Components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
 import * as ErrorMsg from './ErrorMsg';
 
@@ -31,7 +30,7 @@ class Auth extends Component{
               elementType: 'input',
               elementConfig: {
                 type: 'password',
-                placeholder: 'Enter password'
+                placeholder: 'password'
               },
               value: '',
               validation: {
@@ -151,10 +150,17 @@ class Auth extends Component{
         }      
       
       return(
-        <Grid>
+        <Grid className={classes.showModal}>
           <Row className="show-grid">
           <div className={classes.Auth}>
             {errorMessage}
+            <Row>
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4}/>
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4} className={classes.title}>
+                {!this.state.isSignup? 'SIGN IN':'SIGN UP'}
+              </Col>
+              <Col lg={4} md={4} sm={4} xs={4} xxs={4}/>             
+            </Row>
             <Row>
               <Col lg={4} md={4} sm={4} xs={4} xxs={4}/>
               <Col lg={4} md={4} sm={4} xs={4} xxs={4}>

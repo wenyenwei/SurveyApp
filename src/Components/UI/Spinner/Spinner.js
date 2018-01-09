@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image} from 'react-bootstrap';
-import classes from './Spinner.css';
 
 const spinner = () => (
     <Image 

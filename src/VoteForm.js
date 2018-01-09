@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {Row, Col, FormGroup, ControlLabel, FormControl, Radio, Button} from 'react-bootstrap';
+import {Row, FormGroup, ControlLabel, Button} from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import Input from './Components/UI/Input/Input';
 
@@ -257,15 +257,11 @@ class VoteForm extends Component{
     
     handleSubmit(e){
         alert('Successfully submitted');
-        const resultsArray = [];
+        const resultsArray = {};
         for (let key in this.state.controls){
-          resultsArray.push({
-            [key]: this.state.controls[key].value
-          })
+          resultsArray[key] = this.state.controls[key].value;
         }
-        alert(JSON.stringify(resultsArray));
         e.preventDefault();
-        
         this.props.addSurvey(resultsArray);
         this.props.history.push('/show_result');
     }
@@ -301,7 +297,8 @@ class VoteForm extends Component{
           <Row>
             {/*<form className="Form" onSubmit={this.handleSubmit}>*/}
             <form className="Form" onSubmit={(e) => {
-              //eslint-disable-next-line
+              e.preventDefault();
+               //eslint-disable-next-line
               if(confirm('Are you sure to submit?')){this.handleSubmit(e);}
             }}>
               {form}

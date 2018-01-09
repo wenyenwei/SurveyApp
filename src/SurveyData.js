@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import {Row, Col} from 'react-bootstrap';
-import classes from './App.css';
+import React from 'react';
 
 const SurveyData = ({surveyDataList}) => {
     const surveyData = surveyDataList.map((data, i) => {

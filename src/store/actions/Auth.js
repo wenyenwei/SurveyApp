@@ -51,10 +51,10 @@ export const auth = (email, password, isSignup) => {
         }
         axios.post(url, authData)
         .then(response => {
-            console.log(response);
             dispatch(authSuccess(response.data.idToken, response.data.localId, response.data.email));
             dispatch(CheckAuthTimeout(response.data.expiresIn));
             alert('Successfully sign in');
+            window.history.back()
 
         })
         .catch(err => {

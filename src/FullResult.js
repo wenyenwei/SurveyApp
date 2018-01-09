@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Navbar, NavItem, Nav, NavDropdown, MenuItem, Col, Button, Table, Grid, Row, Panel, Image} from 'react-bootstrap';
+import {Navbar, NavItem, Nav, Col, Button, Table, Grid, Row, Panel, Image} from 'react-bootstrap';
 import 'font-awesome/css/font-awesome.min.css';
-import { BrowserRouter as Router, Route, Link, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, withRouter } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import classes from './App.css';
@@ -21,7 +22,8 @@ class FullResult extends Component{
           visible: false,
           courses: [],
           maxNume: 1,
-          loading: true
+          loading: true,
+          redirect: false
         }
         this.addSurvey = this.addSurvey.bind(this);
         this.showResults = this.showResults.bind(this);
@@ -59,9 +61,9 @@ class FullResult extends Component{
         this.setState({visible:!this.state.visible});
       }else{
         if (confirm('You need to login to view this section')){ // eslint-disable-line
-          return (<Redirect to='/login' push/>);
-          alert('redirect is still not working');       
-        };
+            this.props.history.push('/login');   
+            window.location.reload();
+        }
       }
     }
     countVotes(){
@@ -116,18 +118,25 @@ class FullResult extends Component{
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1}><Link to="/join_course_survey" className={classes.Link}>Join Course Survey</Link></NavItem>
-              <NavItem eventKey={2}><Link to="/show_result" className={classes.Link}>Show Results</Link></NavItem>
+              <LinkContainer to="/join_course_survey" className={classes.Link}>
+                <NavItem eventKey={1}>Join Course Survey</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/show_result" className={classes.Link}>
+                <NavItem eventKey={2}>Show Results</NavItem>
+              </LinkContainer>              
             </Nav>
           {this.props.token? 
             <Nav pullRight>
-                <NavItem>Welcome {this.props.email}</NavItem>
-                <NavItem eventKey={1}><Link to="/logout" className={classes.Link}>Logout</Link></NavItem>
+              <NavItem>Welcome {this.props.email}</NavItem>
+              <LinkContainer to="/logout" className={classes.Link}>
+                <NavItem eventKey={2}>Logout</NavItem>
+              </LinkContainer>
             </Nav>
               :
             <Nav pullRight>
-              <NavItem eventKey={1}><Link to="/login" className={classes.Link}>Login</Link></NavItem>
-              <NavItem eventKey={2} href="/login">Sign up</NavItem>
+              <LinkContainer to="/login" className={classes.Link}>
+                <NavItem eventKey={1}>Login</NavItem>
+              </LinkContainer>
             </Nav>
           }
           </Navbar.Collapse>
@@ -152,10 +161,9 @@ class FullResult extends Component{
 
         </header>
         <br />
-
         <Route exact path="/show_result" render={() => {         
           return(
-          <Grid>
+          <Grid className={classes.showModal}>
             <Row className="show-grid">
               <Col lg={12} md={12} sm={12}>
               <Panel>
@@ -217,7 +225,7 @@ class FullResult extends Component{
 
         <Route exact path="/join_course_survey" render={()=>{
           return(
-          <Grid>
+          <Grid className={classes.showModal}>
             <Row className="show-grid">
               <Col lg={2} md={2} sm={2} xs={2} xxs={2} />
               <Col lg={8} md={8} sm={8} xs={8} xxs={8}>

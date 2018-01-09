@@ -1,7 +1,7 @@
 const APIURL = '/api/survey';
 
 export async function getSurveys(){
-    return fetch(APIURL)/* global fetch*///add proxy at package.json so this refers to :8081/api/surveys
+    return fetch(APIURL) /* global fetch*/ //add proxy at package.json so this refers to :8081/api/surveys
     .then(resp => {
         if (!resp.ok){
             if (resp.status >= 400 && resp.status < 500){
@@ -30,7 +30,7 @@ export async function createSurvey(val){
         if (!resp.ok){
             if (resp.status >= 400 && resp.status < 500){
                 return resp.json().then(data => {
-                    let err = {errorMessage: data.message};
+                    let err = {errorMessage: data.message+'in !resp.ok'};
                     throw err;
                 })
             }else {
@@ -38,7 +38,7 @@ export async function createSurvey(val){
                 throw err;
             }
         }
-        return resp.json()
+        return resp.json();
     })    
 }
 

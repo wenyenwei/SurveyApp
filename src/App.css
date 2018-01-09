@@ -1,4 +1,11 @@
-.countBar{
+.route-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+.route-enter.route-enter-active {
+  opacity: 1;
+  transition: opacity 250ms ease-in;
 }
 .button{
   height: 60px;

@@ -1,5 +1,4 @@
 import React from 'react';
-import {ControlLabel} from 'react-bootstrap';
 import classes from './Input.css';
 
 const input = ( props ) => {
@@ -33,7 +32,7 @@ const input = ( props ) => {
                     className={inputClasses.join(' ')}
                     value={props.value}
                     onChange={props.changed}>
-                    <option key="select" value="" selected disabled hidden>Select</option>
+                    <option key="select" value="" disabled hidden>Select</option>
                     {props.elementConfig.options.map(option => (
                         <option key={option.value} value={option.value}>
                             {option.displayValue}
