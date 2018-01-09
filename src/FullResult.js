@@ -30,6 +30,9 @@ class FullResult extends Component{
         this.loadSurveys = this.loadSurveys.bind(this);
         this.countVotes = this.countVotes.bind(this);
     }
+    componentDidMount(){
+      this.props.onTryAutoSignup();
+    }
     componentWillMount(){
         this.loadSurveys();
     }
@@ -269,7 +272,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-      logout: () => dispatch(actions.logout())
+      logout: () => dispatch(actions.logout()),
+      onTryAutoSignup: () => dispatch(actions.authCheckState())
     }
 }
 
