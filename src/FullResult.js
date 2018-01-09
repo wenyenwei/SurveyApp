@@ -266,7 +266,7 @@ class FullResult extends Component{
 const mapStateToProps = state => {
   return {
     token: state.token,
-    email: state.email
+    email: localStorage.getItem('email')
   }
 }
 

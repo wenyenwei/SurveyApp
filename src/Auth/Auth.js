@@ -90,8 +90,7 @@ class Auth extends Component{
         this.setState({controls: updateControls});
     }
 
-    submitHandler = (event) => {
-      event.preventDefault();
+    submitHandler = () => {
       this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup);
     }
 
@@ -177,7 +176,7 @@ class Auth extends Component{
                 <form>        
                   {form}
                   <Button 
-                    onClick={(e)=>this.submitHandler(e)} 
+                    onClick={this.submitHandler} 
                     bsStyle="success" 
                     bsSize="large" 
                     block
