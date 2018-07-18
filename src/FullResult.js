@@ -106,7 +106,7 @@ class FullResult extends Component{
               courseCount = {this.state.courses[course]}
             />          
           );
-          this.state.loading = false; //放這個位置滿奇怪的，求解
+          this.state.loading = false; 
         }
 
     return(
